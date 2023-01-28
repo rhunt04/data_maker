@@ -1,6 +1,6 @@
 # `data_maker`
 
-An interface for generating fake data in a schema using (`faker`)[https://github.com/joke2k/faker].
+An interface for generating fake data in a schema using [`faker`](https://github.com/joke2k/faker).
 
 You supply:
 
@@ -14,8 +14,7 @@ You supply:
 
 ## What `data_maker` doesn't do
 
--   Implement any of it's own data-faking steps. If you require this, we support
-    user-defined `faker` providers via `insert_target_here`.
+-   Implement any of it's own data-faking steps.
 
 ## Examples
 
