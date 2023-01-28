@@ -1,4 +1,4 @@
-*.yaml
+test*.yaml
 data_env*
 output_data*
 __pycache__
