@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-from src.parser import get_config
+from src.parse_config import get_config
 from src.generator import DataGenerator
 
-conf = get_config("test2.yaml")
-DataGenerator(conf).run()
+if __name__ == "__main__":
+    conf = get_config("test2.yaml")
+    DataGenerator(conf).run()

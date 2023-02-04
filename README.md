@@ -1,6 +1,6 @@
 # `data_maker`
 
-An interface for generating fake data in a schema using [`faker`](https://github.com/joke2k/faker).
+An interface for generating fake data in a schema using [`mimesis`](https://mimesis.name/en/master/).
 
 You supply:
 
@@ -9,7 +9,7 @@ You supply:
 
 `data_maker`:
 
--   Reads the schema, validates it, uses `faker` to generate the requisite
+-   Reads the schema, validates it, uses `mimesis` to generate the requisite
     data sets it specifies, and outputs to the required spec.
 
 ## What `data_maker` doesn't do
@@ -20,28 +20,28 @@ You supply:
 
 # Generate a single `.csv` table
 
-The following `data_maker` config generates a `.csv` tabled named
-`integer_list` containing a number of rows of `faker`-generated data, via the
-`pyint` provider with default arguments.
+The following `data_maker` config generates a table named `names_list.csv`
+containing a number of rows of `mimesis`-generated data, via the generic
+`full_name` provider with default arguments. The column name is `name`.
 
 ```YAML
 tables:
-    - name: integer_list
+    - name: names_list
       columns:
-          - name: super_integer
-            col_type: pyint
+          - name: name
+            col_type: full_name
 ```
 
-We build heavily on `faker`-supported syntax in general, and if one wants to try
-to supply additional arguments to the `faker.Faker()` provider object, one can,
-with an optional `fargs` dict.
+We build heavily on `mimesis`-supported syntax in general, and if one wants to
+try to supply additional arguments to the `mimesis` `Field()` provider object,
+one can, with an optional `args` dict.
 
 ```YAML
 tables:
-    - name: integer_list
+    - name: sampled_years_after_1990
       columns:
-          - name: super_integer
-            col_type: pyint
-            fargs:
-              max_value: 9
+          - name: year
+            col_type: year
+            args:
+              minimum: 9
 ```
