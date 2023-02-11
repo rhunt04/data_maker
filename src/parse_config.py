@@ -1,29 +1,33 @@
 """
-    parser.py
+parser.py.
 
-        Parse user-supplied configuration files.
-
-        Offer the option to generate an example configuration file.
+    Parse user-supplied configuration files.
 
 """
 
+from typing import Dict, List, Optional
+
 from mimesis.schema import Field
+from pydantic import BaseModel, Extra, validator
 from yaml import safe_load
-from typing import List, Optional, Dict
-from pydantic import BaseModel, validator, Extra
 
 
 class ColumnEntry(BaseModel, extra=Extra.forbid):
-    # TODO: make name or col_type optional: perhaps "name" is the default,
+    """
+    Single column item.
+
+    TODO: make name or col_type optional: perhaps "name" is the default,
     # and "col_type" is set to that, assuming one is happy for column names to
     # coincide with mimesis provider names (seems reasonable).
+    """
+
     name: str
     col_type: str
     args: Optional[Dict] = {}
 
     @validator("col_type")
     def col_types_are_recognised_providers(cls, col_type) -> str:
-        """Ensure the column type variables correspond are mimesis Field providers.
+        """Ensure column type variables are mimesis Field providers.
 
         Args:
             col_type (str): the provider we're aiming to use to generate this
@@ -35,7 +39,6 @@ class ColumnEntry(BaseModel, extra=Extra.forbid):
         Returns:
             str: the _valid_ column type.
         """
-
         try:
             _ = Field()(col_type)
         except Exception as e:
@@ -46,12 +49,12 @@ class ColumnEntry(BaseModel, extra=Extra.forbid):
 
     @validator("args")
     def args_are_recognised_provider_args(cls, args, values) -> dict:
-        """Ensure user-supplied args are actually valid arguments for this
-        provider.
+        """Ensure user-supplied args are actually valid arguments for this provider.
 
         Args:
             fargs (dict): user-supplied dict of argument/value pairs.
-            values (dict): pydantic-supplied dict of key/value pairs for class model.
+            values (dict): pydantic-supplied dict of key/value pairs for class
+            model.
 
         Raises:
             ValueError: if we identify that a supplied item in args is not a
@@ -84,11 +87,14 @@ class TableEntry(BaseModel, extra=Extra.forbid):
 
 
 class Config(BaseModel, extra=Extra.forbid):
+    """Main config file spec: a list of tables and a generic config block."""
+
     tables: List[TableEntry]
     config: Optional[MainConfigBlock] = MainConfigBlock()
 
 
 def get_config(filename) -> Config:
+    """(try to) Parse `filename` as yaml."""
     try:
         with open(filename) as conf_file:
             raw_conf = safe_load(conf_file)

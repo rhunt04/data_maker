@@ -20,9 +20,10 @@ You supply:
 
 # Generate a single `.csv` table
 
-The following `data_maker` config generates a table named `names_list.csv`
-containing a number of rows of `mimesis`-generated data, via the generic
-`full_name` provider with default arguments. The column name is `name`.
+The following `data_maker` configuration generates a table named
+`names_list.csv` containing a number of rows of `mimesis`-generated data, via
+the generic `full_name` provider with default arguments. The column name is
+`name`.
 
 ```YAML
 tables:

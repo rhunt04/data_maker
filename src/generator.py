@@ -1,22 +1,27 @@
 """
-    generator.py
+generator.py.
 
-        Generate data in the requested schema using `mimesis`. Return as a list
-        of data frames of the requested number of rows.
+    Generate data in the requested schema using `mimesis`. Return as a list
+    of data frames of the requested number of rows.
 
 """
 
-import csv
-from mimesis import Field, Schema
 from pathlib import Path
-from src.parse_config import get_config, Config, TableEntry
+
+from mimesis import Field, Schema
+
+from src.parse_config import Config, TableEntry
 
 
 class DataGenerator(object):
+    """Handle data generation from schema(s)."""
+
     def __init__(self, config: Config):
+        """Just get config object."""
         self.config: Config = config
 
     def generate_table(self, table: TableEntry):
+        """Given a table schema entry, generate data."""
         config = dict(self.config.config)
         if table.table_config:
             # Overlay table-specific config.
@@ -24,7 +29,9 @@ class DataGenerator(object):
 
         # print(
         #     "Generating {nrow} rows of {ncol} columns for `{table}`.".format(
-        #         nrow=config["num_rows"], ncol=len(table.columns), table=table.name
+        #         nrow=config["num_rows"],
+        #         ncol=len(table.columns),
+        #         table=table.name,
         #     )
         # )
 
@@ -46,4 +53,5 @@ class DataGenerator(object):
         schema.to_csv(file_path=filename, iterations=config["num_rows"])
 
     def run(self):
+        """For tables in schema, run generator."""
         [self.generate_table(t) for t in self.config.tables]
